@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DonatMania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .fade {
+        transition: opacity 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-pink-50 font-sans"></body>
+</html>
+
+<!-- Navbar -->
+<header class="sticky top-0 z-50 bg-pink-600 text-white shadow-md">
+  <div class="flex items-center justify-between px-4 py-3">
+    <div class="flex items-center gap-6">
+  <h1 class="text-xl font-bold">🍩 DonatMania</h1>
+</div>
+<div class="flex gap-2 items-center">
+  <nav class="hidden md:flex gap-4 text-white text-sm font-bold mr-4">
+    <a href="#home" class="hover:underline">Home</a>
+    <a href="#produk" class="hover:underline">Menu</a>
+    <a href="#tentang" class="hover:underline">Tentang</a>
+  </nav>
+  <span id="searchToggle" class="cursor-pointer text-xl">🔍</span>
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Cari donat..."
+    class="hidden px-2 py-1 rounded text-black border border-white focus:outline-none focus:ring-2 focus:ring-white transition"
+  />
+  <span id="cartIcon" class="cursor-pointer relative">
+    🛒<span
+      id="cartCount"
+      class="absolute -top-2 -right-2 text-xs bg-white text-pink-600 rounded-full px-1"
+      >0</span
+    >
+  </span>
+</div>
+  </div>
+</header>
+
+<!-- Landing Section -->
+<section class="bg-pink-100 py-10 text-center">
+  <img
+    src="https://i.imgur.com/5Z6lPLl.jpg"
+    alt="Donat Lezat"
+    class="mx-auto w-40 h-40 rounded-full shadow-lg mb-4"
+  />
+  <h2 class="text-2xl font-bold text-pink-700 mb-2">
+    Donat Hangat Siap Antar!
+  </h2>
+  <p class="text-pink-600 mb-4">
+    Nikmati kelembutan donat premium dengan berbagai topping favoritmu 🍓🍫🧀
+  </p>
+  <a
+    href="#produk"
+    class="bg-pink-600 text-white px-5 py-2 rounded-full shadow hover:bg-pink-700 transition"
+    >Lihat Menu</a
+  >
+</section>
+<!-- Produk -->
+<main class="px-6 py-10 text-center" id="produk">
+  <h2 class="text-2xl font-semibold mb-6 text-pink-700">Varian Donat</h2>
+  <div
+    id="produkList"
+    class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+  ></div>
+</main>
+
+<!-- Modal Keranjang -->
+<div
+  id="cartModal"
+  class="fixed top-0 right-0 w-80 max-w-full h-full bg-white shadow-lg p-4 hidden overflow-auto z-50"
+>
+  <h3 class="text-lg font-semibold mb-2">Keranjang Anda</h3>
+  <ul id="cartItems" class="space-y-2"></ul>
+  <p id="totalHarga" class="mt-4 font-bold">Total: Rp 0</p>
+  <div class="mt-4 space-y-2">
+    <input type="text" id="namaPemesan" placeholder="Nama" class="w-full border px-2 py-1 rounded" />
+    <input type="text" id="alamatPemesan" placeholder="Alamat" class="w-full border px-2 py-1 rounded" />
+    <textarea id="catatanPemesan" placeholder="Catatan (opsional)" class="w-full border px-2 py-1 rounded"></textarea>
+    <select id="pembayaran" class="w-full border px-2 py-1 rounded">
+  <option value="">Pilih Pembayaran</option>
+  <option value="COD">COD</option>
+  <option value="Transfer Bank">Transfer Bank</option>
+  <option value="DANA">DANA</option>
+  <option value="GoPay">GoPay</option>
+  <option value="ShopeePay">ShopeePay</option>
+  <option value="OVO">OVO</option>
+  <option value="LinkAja">LinkAja</option>
+    </select>
+    <div id="petunjukEwallet" class="mt-2 hidden bg-pink-50 p-2 rounded border text-sm text-gray-700">
+  <p><strong>Transfer ke:</strong></p>
+  <p id="detailEwallet">Pilih metode e-wallet untuk melihat detail.</p>
+  <img id="qrEwallet" src="" alt="QR Code" class="mt-2 w-32 h-32 mx-auto hidden rounded border">
+</div>
+    <button
+      onclick="kirimPesanan()"
+      class="w-full bg-green-500 text-white py-2 rounded"
+    >
+      Kirim
+    </button>
+    <button onclick="tutupKeranjang()" class="w-full bg-gray-300 py-1 rounded">
+      Tutup
+    </button>
+  </div>
+</div>
+<section id="tentang" class="bg-white py-10 px-4 text-center">
+  <h2 class="text-2xl font-bold text-pink-700 mb-4">Tentang DonatMania</h2>
+  <p class="text-gray-700 max-w-xl mx-auto mb-4 leading-relaxed">
+    DonatMania berkomitmen menyajikan donat lezat dari bahan berkualitas tinggi tanpa pengawet. 
+    Kami berlokasi di Lubuklinggau dan siap mengantar langsung ke pintu rumahmu! 🍩✨
+  </p>
+  <div class="flex justify-center gap-6 mt-6 text-pink-600 text-2xl">
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-pink-600 text-white px-4 py-6 mt-10">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-4">
+    <div>
+      <h4 class="font-bold mb-2">DonatMania</h4>
+      <p>
+        DonatMania menyajikan donat lembut & manis setiap hari dari
+        Lubuklinggau.
+      </p>
+    </div>
+    <div>
+      <h4 class="font-bold mb-2">Jam Buka</h4>
+      <p>Senin - Jumat: 08.00 - 17.00</p>
+      <p>Sabtu - Minggu: 09.00 - 15.00</p>
+    </div>
+    <div>
+      <h4 class="font-bold mb-2">Lokasi</h4>
+      <iframe
+        src="https://www.google.com/maps?q=Lubuklinggau&output=embed"
+        class="w-full h-32 rounded"
+      ></iframe>
+    </div>
+  </div>
+  <div class="flex justify-center gap-6 mt-6 text-white">
+  <a href="https://instagram.com/_sshntaaa" target="_blank" title="Instagram">
+    <i data-lucide="instagram" class="w-6 h-6 hover:text-pink-200"></i>
+  </a>
+  <a href="mailto:lshinta881@gmail.com" title="Email">
+    <i data-lucide="mail" class="w-6 h-6 hover:text-pink-200"></i>
+  </a>
+  <a href="https://wa.me/6281299111498" target="_blank" title="WhatsApp">
+    <i data-lucide="message-circle" class="w-6 h-6 hover:text-pink-200"></i>
+  </a>
+</div>
+  <p class="text-center text-sm mt-4">&copy; 2025 DonatMania</p>
+</footer>
+<script>
+  const produkData = [
+  {
+    nama: "Donat Coklat",
+    harga: "Rp 7000",
+    gambar: "https://images.unsplash.com/photo-1565958011703-44f9829ba187",
+    deskripsi: "Donat klasik dengan lapisan coklat lumer."
+  },
+  {
+    nama: "Donat Stroberi",
+    harga: "Rp 8000",
+    gambar: "https://imgur.com/MV8Aand",
+    deskripsi: "Topping stroberi segar dengan taburan gula."
+  },
+  {
+    nama: "Donat Keju",
+    harga: "Rp 9000",
+    gambar: "https://imgur.com/DPZh20r",
+    deskripsi: "Gurih dan lembut dengan taburan keju parut."
+  },
+  {
+    nama: "Donat Matcha",
+    harga: "Rp 8500",
+    gambar: "https://imgur.com/YMddrKK",
+    deskripsi: "Matcha Jepang berpadu dengan kelembutan donat."
+  },
+  {
+    nama: "Donat Oreo",
+    harga: "Rp 8500",
+    gambar: "https://imgur.com/WtCgwic",
+    deskripsi: "Taburan Oreo renyah di atas krim vanilla."
+  },
+  {
+    nama: "Donat Red Velvet",
+    harga: "Rp 9500",
+    gambar: "https://imgur.com/IWkgEGS",
+    deskripsi: "Donat cantik dengan rasa red velvet khas."
+  },
+  {
+    nama: "Donat Blueberry",
+    harga: "Rp 8000",
+    gambar: "https://imgur.com/62j2Zvt",
+    deskripsi: "Selai blueberry segar dalam setiap gigitan."
+  },
+  {
+    nama: "Donat Milo",
+    harga: "Rp 8500",
+    gambar: "https://imgur.com/Wmwp6lK",
+    deskripsi: "Donat Milo manis, favorit anak-anak!"
+  }
+];
+
+  const keranjang = [];
+
+  function tampilkanProduk() {
+    const produkList = document.getElementById("produkList");
+    produkList.innerHTML = "";
+    produkData.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-xl shadow p-4 text-center";
+      card.innerHTML = `
+        <div class="relative">
+          <img src="${item.gambar}" alt="${item.nama}" class="rounded-lg w-full h-40 object-cover mb-2" />
+          <button onclick="tambahKeKeranjang(${index})" class="absolute top-2 right-2 bg-pink-600 text-white p-1 rounded-full shadow">🛒</button>
+        </div>
+        <h3 class="font-semibold text-lg">${item.nama}</h3>
+        <p class="text-sm text-gray-600">${item.deskripsi}</p>
+        <p class="text-pink-600 font-bold mt-1">${item.harga}</p>
+      `;
+      produkList.appendChild(card);
+    });
+  }
+
+  function tambahKeKeranjang(index) {
+    const item = produkData[index];
+    const ada = keranjang.find(p => p.nama === item.nama);
+    if (ada) {
+      ada.jumlah += 1;
+    } else {
+      keranjang.push({ ...item, jumlah: 1 });
+    }
+    updateKeranjang();
+  }
+
+  function updateKeranjang() {
+    const cartItems = document.getElementById("cartItems");
+    cartItems.innerHTML = "";
+    let total = 0;
+    keranjang.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.className = "flex justify-between items-center border-b pb-1";
+      li.innerHTML = `
+        <span>${item.nama} x${item.jumlah}</span>
+        <div class="flex gap-1">
+          <button onclick="ubahJumlah(${index}, -1)" class="bg-gray-200 px-2">−</button>
+          <button onclick="ubahJumlah(${index}, 1)" class="bg-gray-200 px-2">+</button>
+          <button onclick="hapusItem(${index})" class="text-red-500">🗑️</button>
+        </div>
+      `;
+      cartItems.appendChild(li);
+      total += parseInt(item.harga.replace(/[^\d]/g, "")) * item.jumlah;
+    });
+    document.getElementById("totalHarga").textContent = "Total: Rp " + total.toLocaleString("id-ID");
+    document.getElementById("cartCount").textContent = keranjang.reduce((sum, item) => sum + item.jumlah, 0);
+  }
+
+  function ubahJumlah(index, delta) {
+    keranjang[index].jumlah += delta;
+    if (keranjang[index].jumlah <= 0) {
+      keranjang.splice(index, 1);
+    }
+    updateKeranjang();
+  }
+
+  function hapusItem(index) {
+    keranjang.splice(index, 1);
+    updateKeranjang();
+  }
+
+  function tutupKeranjang() {
+    document.getElementById("cartModal").classList.add("hidden");
+  }
+
+  document.getElementById("cartIcon").addEventListener("click", () => {
+    document.getElementById("cartModal").classList.remove("hidden");
+  });
+
+ function kirimPesanan() {
+  const nama = document.getElementById("namaPemesan").value.trim();
+  const alamat = document.getElementById("alamatPemesan").value.trim();
+  const catatan = document.getElementById("catatanPemesan").value.trim();
+  const metode = document.getElementById("pembayaran").value;
+
+  if (!nama || !alamat || !metode || keranjang.length === 0) {
+    alert("Mohon lengkapi data dan isi keranjang!");
+    return;
+  }
+
+  const total = keranjang.reduce((t, item) => {
+    return t + parseInt(item.harga.replace(/[^\d]/g, "")) * item.jumlah;
+  }, 0);
+
+  fetch("http://localhost:3000/pesanan", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nama,
+      alamat,
+      catatan,
+      metode,
+      keranjang,
+      total
+    })
+  })
+    .then(response => response.text())
+    .then(msg => {
+      alert(msg);
+      // Kirim ke WhatsApp
+  let pesanWA = `🧾 *Pesanan DonatMania*\n\n`;
+  keranjang.forEach(item => {
+    pesanWA += `• ${item.nama} x${item.jumlah}\n`;
+  });
+  pesanWA += `\n*Total:* Rp ${total.toLocaleString("id-ID")}\n\n`;
+  pesanWA += `*Nama:* ${nama}\n*Alamat:* ${alamat}\n*Metode Pembayaran:* ${metode}`;
+  if (catatan) pesanWA += `\n*Catatan:* ${catatan}`;
+  pesanWA += `\n\nSilakan kirim bukti pembayaran ke WhatsApp ini setelah transfer.`;
+
+  const url = `https://wa.me/6281299111498?text=${encodeURIComponent(pesanWA)}`;
+  window.open(url, "_blank");
+      tutupKeranjang();
+    })
+    .catch(error => {
+      console.error("Gagal mengirim:", error);
+      alert("Terjadi kesalahan saat mengirim pesanan.");
+    });
+}
+
+  document.getElementById("searchToggle").addEventListener("click", () => {
+    const input = document.getElementById("searchInput");
+    input.classList.toggle("hidden");
+    if (!input.classList.contains("hidden")) input.focus();
+  });
+
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+    const cards = document.querySelectorAll("#produkList > div");
+    const landing = document.querySelector("section.bg-pink-100");
+    const title = document.querySelector("#produk h2");
+    let cocokAda = false;
+    cards.forEach(card => {
+      const nama = card.querySelector("h3").textContent.toLowerCase();
+      const deskripsi = card.querySelector("p").textContent.toLowerCase();
+      const cocok = nama.includes(keyword) || deskripsi.includes(keyword);
+      if (cocok) {
+        card.style.display = "block";
+        cocokAda = true;
+      } else {
+        card.style.display = "none"
+      }
+    });
+    if (keyword) {
+      landing?.classList.add("hidden");
+      title?.classList.add("hidden");
+    } else {
+      landing?.classList.remove("hidden");
+      title?.classList.remove("hidden");
+      cards.forEach(card => card.style.display = "block");
+      }
+  });
+
+  document.getElementById("pembayaran").addEventListener("change", function () {
+  const metode = this.value;
+  const petunjuk = document.getElementById("petunjukEwallet");
+  const detail = document.getElementById("detailEwallet");
+  const qr = document.getElementById("qrEwallet");
+
+  const dataEwallet = {
+    "DANA": {
+      no: "085249165037",
+      qr: "https://i.imgur.com/qrdana.png"
+    },
+    "GoPay": {
+      no: "083803675721",
+      qr: "https://i.imgur.com/qrgopay.png"
+    },
+    "ShopeePay": {
+      no: "083803675721",
+      qr: "https://i.imgur.com/qrshopeepay.png"
+    },
+    "OVO": {
+      no: "0812-xxxx-xxxx",
+      qr: "https://i.imgur.com/qrovo.png"
+    },
+    "LinkAja": {
+      no: "0812-xxxx-xxxx",
+      qr: "https://i.imgur.com/qrlinkaja.png"
+    }
+  };
+
+  if (dataEwallet[metode]) {
+    petunjuk.classList.remove("hidden");
+    detail.textContent = `Nomor: ${dataEwallet[metode].no}`;
+    qr.src = dataEwallet[metode].qr;
+    qr.classList.remove("hidden");
+  } else {
+    petunjuk.classList.add("hidden");
+    qr.classList.add("hidden");
+    qr.src = "";
+  }
+});
+
+  tampilkanProduk();
+  lucide.createIcons();
+
+</script>
+</body>
+</html>
